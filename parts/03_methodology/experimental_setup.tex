@@ -1,0 +1,38 @@
+\section{Experimental Setup}
+\label{sec:Experimental_Setup}
+This section describes the implemented supervised learning model architectures along with their input pipeline and training procedure. In addition, information about the training infrastructure is included. Chapter 4 then presents the results from the training and evaluation.
+
+\subsection{Training Setup}
+\label{sub:Training_Setup}
+All experiments were conducted locally on a Macbook Air (mid 2022) equipped with 16 GB of system memory and an Apple M2 CPU with 8 cores (4 performance and 4 efficiency). To track and visualize the experiments \gls{wandb} was used, since it also offers out-of-the-box hyperparameter optimisation tools called sweeps.
+\newline
+\newline
+For the \gls{lstm} model a single pass through the entire dataset is referred to as one epoch. After each epoch, the model performance is measured on the validation set.
+
+\subsection{Input pipeline}
+\label{sub:Input_Pipeline}
+The input pipeline is a critical component in the refinement of preprocessed datasets for machine learning applications. This section outlines the specific steps taken in the input pipeline. First, a unified data loader is implemented, followed by different training approaches tailored to the two machine learning models: \gls{xgboost} and \gls{lstm}.
+
+\subsection{Data Loader}
+\label{sub:Data_Loader}
+After locally preprocessing and logging the datasets on \gls{wandb}, the data loader plays a key role in the systematic management of the datasets. The process involves downloading the data from \gls{wandb} and storing it locally. The loader then splits the dataset into a train/val set and a test set. The train/val set faciliates initial model training and hyperparameter turning, while the test set contains samples not seen during training, ensuring an unbiased evaluation of model performance after the training has been completed. Hyperparameter tuning, a critical step in machine learning model optimisation, involves defining the best hyperparameters. Commonly tuned hyperparameters include the learning rate, which affects how model parameters are updated. The data loader hands further down the train/val and test set to the appropriate model input pipeline for further processing.
+
+\subsection{Expanding Window}
+\label{sub:Expanding_Window}
+The \gls{xgboost} model uses an expanding window approach. In this strategy, the model is first trained on samples $x_i$ to $x_n$ $\forall i \in \{0, 1, ..., n\}$ and predicts the next sample $x_{n+1},$ evaluating the prediction against the true class by utilizing the multi-class cross-entropy loss function. The model is then retrained on samples $x_i$ to $x_{n+1}$ and continues to predict the next sample $i_{n+2}.$ This iterative process is repeated until the model predicts the final sample in the train/val data set.
+
+\subsection{Rolling Window}
+\label{sub:Rolling_Window}
+In contrast, the \gls{lstm} model uses a rolling window approach. In the first iteration, the model is trained on samples $x_i$ to $x_n \forall i \in \{0, 1, ..., n\}$ and predicts sample $x_{n+1}.$ The model is then retrained on samples $i_1$ to $i_{n+1}$ and predicts the following sample $i_{n+2}.$ This method ensures that the model consistently processes the same number of samples in a sequence during each training step.
+
+\subsection{Models}
+\label{sec:Models}
+As already outlined in section \ref{sub:Input_Pipeline}, the two machine learning models used in this thesis are \gls{xgboost} and \gls{lstm}. This section describes the implementation details of the two supervised machine learning algorithms.
+
+\subsubsection{\gls{xgboost}}
+\label{subsub:XGBoost_train}
+The proposed \gls{xgboost} algorihtm in \cite{liu2023forecasting} was implemented according to the paper with the default configurations. However, the paper implements the \gls{xgboost} for a regression task and uses the $R^2$ as loss function. This thesis implements the algorithm for a classification task and thus, the multi-class cross entropy loss function is used. The code was implemented using the official dmlc XGBoost library\footnote{https://xgboost.readthedocs.io/en/latest/index.html, accessed on 14.11.2023}. The models hyperparameter were tuned using the multi-class cross entropy loss, and the weighted F1 score. The model was trained using the best hyperparameters from the hyperparamter tuning. The final hyperparameters, as well as the tested one, are given in table.
+
+\subsubsection{\gls{lstm}}
+\label{subsub:LSTM_train}
+\cite{yadav2020optimizing} conducted experiments on the optimization of the \gls{lstm} algorithm for time series prediction in the Indian stock market. Thus, the algorithm was implemented using the configurations of the best performing \gls{lstm} model. As already noted previously for the \gls{xgboost} model, the same problem with the loss function arises. \citep{yadav2020optimizing} also trained the model to solve a regression task and used the \gls{mse} for the loss function. This was adapted to the classifcation task at hand. In contrast to the \gls{xgboost} model the categorical cross entropy loss function was implemented. Since the two algorithms differently update their model parameters. The models hyperparameter were tuned using the validation scores and the weighted F1 scores. The model was trained using Adam without any learning rate scheduler. The final hyperparameters, as well as the tested ones, are given in table.

@@ -1,0 +1,65 @@
+\subsection{Gradient Boosting}
+\label{sub:GB}
+
+% Introduction
+In 1990, Schapire introduced the first polynomial-time boosting algorithm \citep{schapire1990strength}, based on Kearns and Valinat's question \citep{kearns1988learning} whether a so-called \textit{week} learning algorithm could be systematically boosted to an arbitrarily accurate \textit{strong} learning algorithm. In 1995, Freund made an important step towards modern boosting by developing a much more efficient boosting algorithm \citep{freund1995boosting}. Although this algorithm was theoretically optimal, it had practical limitations. The turning point in boosting came in 1997 with the introduction of the \gls{adaboost} algorithm by Freund and Schapire \citep{freund1997decision}. The innovation of \gls{adaboost} was that it improves model performance by giving more weight to misclassified examples. Finally, Friedman built on the \gls{adaboost} algorithm and presented the generalisation of boosting algorithms in 1999 \citep{friedman2001greedy}.
+\newline
+\newline
+% Building Blocks
+\gls{gb} builds an ensemble model by sequentially adding base learners, each focusing on correcting the errors made by the previous model. The process involves computing pseudo-residuals, selecting a suitable base learner, finding the optimal update for the model, and updating the ensemble accordingly. The final model is a weighted combination of these base learners.
+\newline
+\newline
+%% Training process
+% Initialization
+The training process of a \gls{gb} algorithm starts with the initialisation of a constant function $F_0(x)$. This initial model aims to minimise the loss function $L(y_i, \rho)$, where $\rho$ is a constant. In essence, $F_0(x)$ is the simplest possible approximation to the target variable and embodies the core principle of boosting, which is to move from a high bias model to a low bias model through incremental steps. The choice of an appropriate loss function $L(y_i, \rho)$ depends on the task, e.g. mean squared error for regression or cross-entropy for classification.
+\newline
+\newline
+% Iterative process
+Then an iterative process starts for $m = 1$ to $M$, where $M$ is the number of boosting iterations. It's important to note that \gls{gb} adds one model at a time, sequentially. The steps within this iterative process are as follows.
+\newline
+\newline
+% Step 1: Calcuate pseudo-residuals
+First, the equation \ref{eq:computing_pseudo-residuals} computes the pseudo-residuals $\tilde{y}_i$ for each training example $x_i$. These pseudo-residuals represent the negative slope of the loss function $L(y_i, \rho)$ with respect to the current model $F_{m-1}(x_i)$ at each data point.
+
+\myequations{Computing pseudo-residuals for each training step}
+\begin{equation}
+    \centering
+    \tilde{y}_i = - \left[\frac{\partial L(y_i, F(x_i))}{\partial F(x_i)} \right]_{F(x)=F_{m-1}(x)}
+    \label{eq:computing_pseudo-residuals}
+\end{equation}
+
+\noindent
+% Step 2: Find a base learner
+The second step is to find the best base learner $h(x, a_m)$, where each $h(x, a_m)$ is typically a small regression tree, such as those produced by \gls{cart} \citep{breiman1984classification}. The goal is to minimise the \gls{mse} between the pseudo-residuals $\tilde{y}_i$ and the predictions made by the base learner and is achieved by using the equation \ref{eq:base_learner_mse}. Here $a_m$ represents the parameters that define the base learner, such as split variables, split locations and terminal node means, while $\beta$ is a coefficient that scales the predictions of the base learner.
+
+\myequations{Base learner that minimizes the mse of the pseudo-residuals}
+\begin{equation}
+    \centering
+    a_m, \beta = \text{arg min}_{a, \beta} \sum_{i=1}^N \left[\tilde{y}_i - \beta h(x_i, a)\right]^2
+    \label{eq:base_learner_mse}
+\end{equation}
+
+\noindent
+% Step 3: Compute an update for the model
+In the third step, the equation \ref{eq:gb_compute_model_update} computes the best update $\rho_m$ for the current base learner that minimises the loss $L$ when applied to the current model $F_{m-1}(x_i)$ and the base learner $(\rho h(x_i, a_m)$.
+
+\myequations{Compute an update for the model}
+\begin{equation}
+    \centering
+    \rho_m = \text{arg min}_\rho \sum_{i=1}^N L(y_i, F_{m-1}(x_i) + \rho h(x_i, a_m))
+    \label{eq:gb_compute_model_update}
+\end{equation}
+
+\noindent
+% Step 4: Update the model
+Finally, the equation \ref{eq:gb_update_model} updates the model by adding the weighted contribution of the current base learner to the previous model.
+ 
+\myequations{Update the model}
+\begin{equation}
+    \centering
+    F_m(x) = F_{m-1}(x) + \rho_m h(x, a_m)
+    \label{eq:gb_update_model}
+\end{equation}
+
+\noindent
+After completing all boosting iterations (from $m = 1$ to $M$), the final model $F_M(x)$ represents the ensemble of base learners that together minimise the chosen loss function and can be used to make predictions on new data.

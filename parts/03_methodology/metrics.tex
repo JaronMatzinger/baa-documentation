@@ -1,0 +1,29 @@
+\section{Metrics}
+\label{sec:Metrics}
+Meaningful metrics need to be used to evaluate and compare the performance of machine learning models. 
+
+
+\subsection{Model Performance}
+\label{sub:Model_Performance}
+A often used metric for classification tasks is the calculation of the F1 score, which is the harmonic mean between the precision and the recall. However, this metric does not take into account the fact that in a trading strategy not all true positives and prediction errors have the same importance. Thus, a custom weighted F1 score is implemented according to \cite{wang2018financial}. The metric differentiate between three types of errors. The first error $E_{1st}$ is when the model predicts either an increase or decrease in price, but the true class yields the opposite. The second error $E_{2nd}$ is when the model predicts either an increase or decrease in price, but the true value is flat. And finally, the third error $E_{3rd}$ is when the model predicts flat but the true value is either an increase or decrease. In addition, not all true positives have the same importance as well. This is the case when the price stays flat. Thus, the above mentioned errors $E_{2nd}$ and $E_{3rd}$ as well as the true positive for flat predictions are penalized with a constant $\beta^2$, to give more importance to the true positives in either increase or decrease and the first error $E_{1st}$. In the case of this thesis, the constants for $\beta^2$ are 0.25 for $\beta_1^2$ and 0.125 for $\beta_2^2$ and $\beta_3^2$.
+
+\myequations{Compute variables for Weighted F1 score}
+\begin{equation}
+    \centering
+    N_{tp} = N_{ti} + N_{td} + \beta_3^2 N_{tf}
+    E_{1st} = E_{witd} + E_{wdti}
+    E_{2nd} = E_{witf} + E_{wdtf}
+    E_{3rd} = E_{wfti} + E_{wftd}
+    \label{eq:compute_variables_f1}
+\end{equation}
+
+\myequations{Compute Weighted F1 score}
+\begin{equation}
+    \centering
+    F = \frac{(1+\beta_1^2+\beta_2^2) N_{tp}}{(1+\beta_1^2 + \beta_2^2) N_{tp} + E_{1st} + \beta_1^2 E_{2nd} + \beta_2^2 E_{3rd}}
+    \label{eq:compute_weighted_f1}
+\end{equation}
+
+\subsection{Portfolio Performance}
+\label{sub:Portfolio_Performance}
+To measure the performance of the model on the portfolio level the metrics turnover, number of trades, statistics about the \gls{pnl} and the max drawdown are calculated.

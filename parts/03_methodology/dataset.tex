@@ -1,0 +1,23 @@
+\section{Dataset}
+\label{sec:Data_Set}
+This thesis aims to evaluate the performance of a machine learning approach using historical price and volume data of \gls{btc} compared to a simple buy-and-hold strategy. The dataset must therefore include historical \gls{ohlc} and volume data of \gls{btc}. In addition, a test dataset containing historical price and volume data of \gls{eth} is required to evaluate whether the model generalizes or not. 
+
+\subsection{Data Mining}
+\label{sub:Data_Mining}
+The most common way to obtain historical price and volume data is to access a data provider's API. These providers can be categorized into cryptocurrency exchanges (as discussed in in section \ref{sub:Exchanges}) and general market data providers. Cryptocurrency exchanges such as Binance and Coinbase offer historical price data for various derivatives listed on their platform via their API. General market data providers such as CoinGecko and CoinMarketCap aggregate data from multiple sources to provide a comprehensive view of the market. This comprehensive data collection can then also be accessed via their API. Liu et al. for example collected price and volume data for 3703 cryptocurrencies in 2023 using CoinMarketCap \citep{liu2023forecasting}.
+\newline
+\newline
+It's worth noting that many providers require subscription-based access to their API. Due to budget constraints, alternative sources such as investing.com have to be used. Investing.com aggregates data for 8355 cryptocurrencies\footnote{https://www.investing.com/crypto/, accessed 16/10/2023}, compared to the 8898 listed on CoinMarketCap\footnote{https://coinmarketcap.com/, accessed 16/10/2023}. Historical data for a specific cryptocurrency can be manually obtained from investing.com by visiting the historical data page, selecting the desired \gls{tf} and period, and then downloading it. This simple process was done for both \gls{btc} and \gls{eth} on the daily \gls{tf}.
+\newline
+\newline
+The resulting individual dataset is a CSV file containing the date, open, high, low, close, volume and percentage change between the previous and current daily close.
+
+\subsection{Data Source}
+\label{sub:Data_Source}
+As part of any data science project, a \gls{dqa} is performed to check for data sanity. One of these checks include whether the data source is trustworthy. In this case, the data was sourced from investing.com, which in turn was sourced from the Bitfinex crypto exchange.
+\newline
+\newline
+Basic information about Bitfinex has been researched. Founded in 2012, the first available data point for \gls{btc} on \gls{tv} is from 31 March 2013. However, the data obtained from investing.com start on 18 July 2010. A similar patter is observed for \gls{eth}, where the first available \gls{tv} data point is from 25 June 2016 and the dataset starts on 10 March 2016.
+\newline
+\newline
+For simplicity, all data prior to the first \gls{tv} data point are dropped for both \gls{btc} and \gls{eth}. Consequently, the \gls{btc} dataset is reduced from 4837 to 3851 data points, and the \gls{eth} dataset undergoes a similar reduction.

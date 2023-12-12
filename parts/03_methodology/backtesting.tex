@@ -1,0 +1,23 @@
+\section{Backtesting}
+\label{sec:Backtesting}
+In order to assess the predictive performance of the machine learning models, a so-called baseline has to be established first. In the case of this thesis, three common used trading strategies from the domain of algorithmic trading are used. Namely, a sma-based strategy, a momentum based strategy and a mean reversion strategy. It is important to note, that these strategies only take long positions, as the drawdawn for short positions can be 100\% of the invested capital and cryptocurrencies are extremly volatile, leading to a complete loss of funds in the worst case. In addition, to trade perps usually margin has to be deposited to the exchange. Where margin is a collateral in the case of default. The margin depends on position size, restrictions by the exchange and the amount of leverage used. For the purpose of this thesis, the later is not being further discussed. If trades are executed without leverage, the margin is equivalent to the position size. For example, a \gls{btc} short position is opened at \$19'000, but the price rises instead of falling, ending at \$40'000. Latest at \$38'000 the position got liquidated because the position was in 100\% loss and thus, the exchange automatically closed the position. In reality there are funding fees, which are necessary to keep perps pegged to the underlying asset and thus, the position would have been liquidated already before \$38'000.
+Note that the start value of the trading account is in all events set to 10'000 USD.
+
+\subsection{Baselines}
+\label{sub:Baselines}
+Lorem Ipsum
+
+\subsubsection{SMA-based Trading Strategy}
+\label{subsub:BB_Baseline}
+ The baseline that uses the \gls{bb} as signals for positions, executes a long position when the daily close price is below or equal to the $\text{BOLD}$. The position will be closed when the close price is above or at the $\text{BOLU}$. In order to create the dataset containing the results for the \gls{bb} baseline, the \gls{bb} are first calculated using the \gls{bb} method from the TA-Lib. Next, the initial account value has to be set to 10'000 USD. Finally, the positions have to be calculated and the final account value calculated.  
+
+\subsubsection{Momentum Trading Strategy}
+\label{subsub:RSI_Baseline}
+Lorem Ipsum
+
+\subsubsection{Mean Reversion Trading Strategy}
+\label{sub:Global_Benchmark}
+Lorem Ipsum
+
+\subsection{Benchmark}
+Lorem Ipsum

@@ -1,0 +1,87 @@
+\subsection{XGBoost}
+\label{sub:XGBoost}
+
+% Introduction
+Introduced by Tianqi Chen and Carlos Guestrin in 2016 \citep{chen2016xgboost}, \gls{xgboost} is an ensemble learning method that is build upon the foundations of \gls{gb} (see \ref{sub:GB}). \gls{xgboost} has gained widespread popularity in both data science competitions and real-world applications due to its robustness and versatility.
+\newline
+\newline
+%% Building Blocks
+% Tree Ensemble Model
+At the core of \gls{xgboost} lies a sophisticated tree ensemble model. In this model, predictions are made by combining the outputs of several individual trees as shown in equation \ref{eq:tree_ensemble_model}. Each of these trees, denoted $f_k$, represents an independent tree structure $q$ and is assigned leaf weights $w$. It's important to note that \gls{xgboost}'s regression trees differ from traditional \glspl{dt} in that they produce continuous scores for each leaf.
+
+\myequations{Tree Ensemble Model}
+\begin{equation}
+    \centering
+    \hat{y}_i = \sum_{k=1}^K f_k(x_i), \quad f_k \in F,
+    \label{eq:tree_ensemble_model}
+\end{equation}
+
+\noindent
+Here $F$ denotes the space of regression trees, commonly known as \gls{cart}.
+\newline
+\newline
+% Regularized Learning Objective
+To effectively train the model, \gls{xgboost} minimises a regularised learning objective function $L(\phi)$. This objective function consists of two terms:
+
+\begin{description}
+   \item[The first term] is the sum of a differentiable convex loss function $l$, which measures the deviation of the model's prediction $\hat{y}_i$ from the actual target value $y_i$.
+   \item[The second term] $\omega(f_k)$ represents a regularisation component that penalizes the complexity of the model. This regularisation helps to prevent overfitting by smoothing the learned weights. Mathematically, it is defined as $\omega(f) = \gamma T + \frac{1}{2} \lambda ||w||^2$.
+\end{description}
+
+\noindent
+The comprehensive objective function for \gls{xgboost} is given by
+
+\myequations{XGBoost Objective Function}
+\begin{equation}
+    \centering
+    \mathcal{L}(\phi) = \sum_i l(\hat{y}_i, y_i) + \sum_k \omega(f_k)
+    \label{eq:xgboost_obj_function}
+\end{equation}
+
+\noindent
+% Additive Training Process
+\gls{xgboost} uses an additive training process that incrementally introduces new functions $f_t$ at each iteration $t$ to minimise the objective function. This approach can be expressed as
+
+\begin{equation}
+    L^{(t)} = \sum_{i=1}^n l(\hat{y}_i, y^{t-1}) + f_t(x_i)) + \omega(f_t)
+\end{equation}
+
+\noindent
+In this way, \gls{xgboost} systematically improves model performance by iteratively incorporating the function $f_t$ that contributes most to minimizing the regularised objective function.
+\newline
+\newline
+% Simplified Objective Function
+For efficient optimisation, \gls{xgboost} uses a second order approximation of the objective function. The simplified objective function at step $t$ is as follows
+
+\myequations{Simplified Objective Function}
+\begin{equation}
+    \centering
+    \tilde{L}^{(t)} = \sum_{i=1}^n \left[ g_i f_t(x_i) + \frac{1}{2} h_i f_t^2(x_i) \right] + \omega(f_t) 
+    \label{eq:simplified_obj_function}
+\end{equation}
+
+\noindent
+Where $g_i$ and $h_i$ are the first and second order gradient statistics of the loss, respectively.
+\newline
+\newline
+% Optimising the tree structure
+To construct an optimal tree structure $q(x)$, \gls{xgboost} employs a greedy algorithm. It starts with a single leaf and iteratively adds branches to the tree. The quality of a candidate split is evaluated using the loss reduction formula:
+
+\myequations{Loss Reduction Formula}
+\begin{equation}
+    \centering
+    L_{\text{split}} = \frac{1}{2} \left[ \frac{(\sum_{i \in I_L} g_i)^2}{\sum_{i \in I_L} h_i + \lambda} + \frac{(\sum_{i \in I_R} g_i)^2}{\sum_{i \in I_R} h_i + \lambda} - \frac{(\sum_{i \in I} g_i)^2}{\sum_{i \in I} h_i + \lambda} \right] - \gamma
+    \label{eq:loss_reduction_formula}
+\end{equation}
+
+\noindent
+Here $I_L$ and $I_R$ denote the instance in the sets of left and right nodes after the split. \gls{xgboost} selects candidate splits that maximize this loss reduction metric.
+\newline
+\newline
+% Overfitting Prevention Techniques
+In addition to the regularized objective function, \gls{xgboost} incorporates two techniques to mitigate overfitting:
+
+\begin{description}
+   \item[Shrinkage] introduced by \cite{friedman2002stochastic}, scales newly added weights by a factor $\eta$ after each tree boosting iteration. Similar to a learning rate in stochastic optimization, shrinkage reduces the influence of individual trees, allowing room for subsequent trees to improve the model gradually.
+   \item[Column Subsampling] involves randomly selecting a subset of features for each tree during training, instead of randomly selecting a subset of data instances. This approach enhances computational efficiency.
+\end{description} 

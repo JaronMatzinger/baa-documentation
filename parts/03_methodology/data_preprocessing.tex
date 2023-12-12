@@ -1,0 +1,63 @@
+\section{Data Preprocessing}
+\label{sec:Data_Preprocessing}
+When preparing datasets for machine learning models, a critical step is to transform them into a machine-readable format, known as preprocessing. In addition, existing data is used to generate features, broadly classified into three categories ($i$) statistical, ($ii$) technical and oscillator indicators and ($iii$) the label. This section outlines the detailed transformations applied within each category.
+
+\subsection{Data Cleaning}
+\label{sub:Data_Cleaning}
+In order to use the data from the data mining process (see \ref{sub:Data_Mining}) for feature generation, the data must be cleaned. In the case of this thesis, each dataset sample represents one trading day, from 00:00 to 23:59. Both datasets have common variables:
+
+\begin{description}
+    \item[Date]: Date of the sample
+    \item[Price]: The price when the trading day ended
+    \item[Open]: The price when the trading day started
+    \item[High]: The highest price reached during the trading day
+    \item[Low]: The lowest price reached during the trading day
+    \item[Vol.]: is the Volume of the sample in USD
+    \item[Change \%]: Percentage difference between the close of the previous and current sample, also known as the daily return
+\end{description}
+
+\noindent
+The values of these variables are initially in an unreadable format, which requires the following changes:
+\begin{enumerate}
+    \item Drop the variable \textit{Change \%} because it is rounded to two decimal points
+    \item Change variable names to lowercase and remove unnecessary punctuation
+    \item Rename the variable \textit{price} to \textit{close}
+    \item Change the order of the \gls{ohlc} variables to match the abbreviation
+    \item Convert the variable \textit{date} to the standardised datetime format
+    \item Convert the values of the \gls{ohlc} variables to the datatype float
+    \item Convert the variable \textit{vol} first to the datatype integer and then into the log format
+    \item Sort the dataset in ascending order and reset the index
+\end{enumerate}
+
+\subsection{Feature Engineering}
+\label{sub:Feature_Engineering}
+The cleaned dataset contains the variables \textit{date}, \textit{open}, \textit{high}, \textit{low}, \textit{close}, \textit{vol} in a computer readable format. Additional statistical and technical indicators (see section \ref{sec:TechnicalIndicators}) can be derived from these variables. The feature engineering in this thesis is divided into two sections: statistical indicators and technical indicators.
+
+\subsubsection{Statistical Indicators}
+\label{subsub:Statistical_Indicators}
+From the variable \textit{close}, \gls{p1dr}, \gls{p7dr} and \gls{p30dr} are calculated. These returns, which are stationary and normally distributed, offer advantages over the non-stationary \textit{close} variable. In addition, the returns are transformed into logarithmic format, which makes them additive. Finally, the \gls{std} and skewness of the \gls{p1dr} over the last 30 days are calculated according to \cite{liu2023forecasting}.
+
+\subsubsection{Technical Indicators}
+\label{subsub:Technical_Indicators}
+In addition to the statistical indicators, several technical indicators commonly used in technical analysis are calculated. These include several \glspl{ema} (12, 26, 50, 200), the \gls{macd}, \gls{bb}, \gls{rsi}, \gls{cci}, \gls{obv}, \gls{adx} and \gls{ad}.
+
+\subsection{Label Engineering}
+\label{sub:Label_Engineering}
+To train a machine learning model, a target feature, or label, must be computed. In financial asset forecasting, three commonly used methods are tomorrow's closing price, tomorrow's log \gls{p1dr}, and tomorrow's price direction. This thesis focuses on the third approach, tomorrow's price direction, because research has shown that machine learning models fail to grasp the magnitude of the close price and thus, the simplest and most straight forward method is to predict only tomorrow's price direction. TODO: better formulate this section. The issue with tomorrow's close price is that the close price is non-stationary, i.e., it is dependent of the current close price.
+
+\subsubsection{Data Discretization}
+\label{subsub:Data_Discretization}
+To predict tomorrow's price direction, \gls{p1dr} is discretized into three classes: decreasing, increasing and stationary as recommended by experts \citep{attanasio2019quantitative}.
+
+\begin{enumerate}
+    \item \gls{p1dr} below -1\% is labelled as decrease (0)
+    \item \gls{p1dr} above 1\% is labelled as increase (2)
+    \item \gls{p1dr} in between is labelled as stationary (1)
+\end{enumerate}
+
+\noindent
+The final labels are then moved back one position within the dataset.
+
+\subsection{Versioning}
+\label{sub:Versioning}
+For efficient storage and reproducibility of results,  both raw and preprocessed datasets are logged using \gls{wandb}. \gls{wandb} provides not only versioning on its platform, but also the traceability of dataset usage.

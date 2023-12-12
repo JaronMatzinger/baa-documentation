@@ -1,0 +1,81 @@
+\subsection{Cryptocurrencies}
+\label{sub:crypto}
+A segment of the financial markets is cryptocurrencies, a specific type of digital assets that mostly operates within a \gls{p2p} network called a blockchain. The blockchain usually consists of the \gls{dlt} and a consensus mechanism. The \gls{dlt} operates through a network of interconnected nodes that collectively maintain and verify transaction records. In the context of well-known cryptocurrencies such as \gls{btc} \citep{bitcoin_2008}, the consensus protocol used is known as proof-of-work, in which participating nodes must solve complex cryptographic puzzles to validate transactions and add a new block to the chain in exchange for a reward. This process involves the broadcast of the newly added block to ensure a unique, immutable chain throughout the network. The following terms are used throughout this thesis.
+
+\begin{description}
+    \item[\gls{btc}] is the world's first and most popular cryptocurrency. \gls{btc} was introduced in 2008 by an anonymous person or group of people using the pseudonym Satoshi Nakamoto.
+    \item[\gls{eth}] is the second largest and most popular cryptocurrency. It was introduced in 2014 by Vitalik Buterin \citep{eth_2014}. Buterin integrated smart contracts into the blockchain framework. These smart contracts allow transactions to be executed through predetermined, immutable algorithms stored on the blockchain, effectively eliminating the need for any type of intermediary.
+    \item[Alternative coins,] or more commonly referred to as altcoins or alts, encompass all cryptocurrencies other than \gls{btc}. While \gls{eth} technically falls into the altcoin category, its profound impact and prolonged presence, spanning nearly nine years, has led some to view it as a prominent entity akin to \gls{btc} itself.
+\end{description}
+
+\noindent
+Next, some basic financial market terms applied to the cryptocurrency domain are introduced.
+
+\subsection{Time Frames}
+\label{sub:TF}
+A \gls{tf} refers to a specific time interval used to analyse price data in financial markets. Commonly used \glspl{tf} are 1-minute, 15-minute, 1-hour, 4-hour, daily, weekly and monthly. This thesis will focuses primarily on the daily \gls{tf}.
+
+\subsection{Open-High-Low-Close Price}
+\label{sub:OHLC}
+The \gls{ohlc} price is correlated to the selected \gls{tf}. Open is the price at the beginning of the \gls{tf} period. High is the highest price reached during the period. Low is the lowest price reached during the period and close is the price at the end of the period.
+\newline
+\newline
+For example, if the \gls{tf} is set to daily, the open price will be the price at 00:00:00 and the close price will be the price at 23:59:59. During this period there will be a high and a low in the price. In the cryptocurrency space, these prices can be within a wide range. For example, the price of \gls{btc} may open at 00:00 with a price of \$20,000.00, then rise during the day to \$21,590.00, which signals the high, and then fall to \$19,200.00, which signals the low, and finally close at 23:59 at \$19,900.00.
+
+\subsection{Volume}
+\label{sub:volume}
+Volume refers to the total number of units of an asset traded in a given \gls{tf}. It is a critical indicator in cryptocurrency markets as it provides insight into market activity and liquidity. High trading volumes can indicate increased market interest and potential price movements.
+
+\subsection{Market Capitalization}
+\label{sub:MarketCap}
+Market capitalization, often referred to as market cap, is the total value of a cryptocurrency. It is calculated by multiplying a cryptocurrency's current market price by the total supply in circulation. Market cap is often used to rank and compare cryptocurrencies and is an indicator of their relative size within the market.
+
+\subsection{Volatility}
+\label{sub:Vola}
+Volatility refers to the degree to which the price of an asset fluctuates over time. In the context of cryptocurrencies, high volatility means that prices can change rapidly and significantly in a short period of time, as discussed in section \ref{sub:OHLC}. Volatility can present both opportunities and risks for traders and investors.
+
+\subsection{Exchanges}
+\label{sub:Exchanges}
+Exchanges are online platforms where users can buy and sell cryptocurrencies. They act as intermediaries that facilitate the exchange of digital assets. The most prominent exchange in the world is Binance, followed by Coinbase. There are several others such as Bybit and OKX.
+
+\subsection{Bid-Ask Spread}
+\label{sub:Bid-Ask}
+The bid-ask spread is the difference between the highest price a buyer is willing to pay (the bid) and the lowest price a seller is willing to accept (the ask) for an asset. It represents the transaction cost to traders and reflects the liquidity of an asset. A tighter spread indicates a more liquid market.
+
+\subsection{Market Maker}
+\label{sub:MM}
+The \glspl{mm} play a pivotal role in the financial markets, particularly in maintaining liquidity and managing the bid-ask spread. As explained in the previous section, they are specialized entities or individuals equipped to facilitate the trading of financial assets.
+\newline
+\newline
+\glspl{mm} continuously provide both bid and ask prices for a specific asset. When they acquire an asset at the ask price, they don't immediately sell the same asset at the bid price. Instead, they execute trades with another unit of the identical asset that they acquired at a lower cost, matching the bid. This strategic approach allows \glspl{mm} to profit from the price differential between the bid and ask, while simultaneously ensuring that there is a continuous flow of buy and sell orders.
+\newline
+\newline
+By providing liquidity and facilitating trading, \glspl{mm} help maintain market efficiency and encourage market participation. Their actions directly impact the bid-ask spreads, with narrower spreads indicating a more liquid and competitive market environment.
+
+\subsection{Derivatives}
+\label{sub:Derivatives}
+Derivatives are financial instruments that derive their value from underlying assets, indices, or reference rates. In the cryptocurrency space, two of the most important types of derivatives are spot contracts and perpetual futures contracts.
+
+\subsubsection{Spot Contract}
+\label{subsub:Spot}
+Spot, short for spot contract, allows one market participant to exchange the underlying asset directly with another market participant. In summary, spot facilitates the exchange of assets between two market participants through an exchange (see section \ref{sub:Exchanges}).
+
+\subsubsection{Futures Contract}
+\label{subsub:Futures}
+A futures contract, often called a futures, gives market participants the option to buy the underlying asset in the future at the price at which the contract was sold. These contracts have a predetermined expiration date in the future, after which they become void. Futures are widely used in various sectors, including agriculture and finance.
+
+\subsubsection{Perpetual Contract}
+\label{subsub:Perps}
+Perps, short for perpetual contracts, are a specialized type of futures primarily used in the cryptocurrency space. Unlike traditional futures, perps have no expiration date. They allow market participants to buy and sell assets without directly owning them. Perps are particularly important for shorting (see section \ref{sub:OrderTypes}), allowing traders to profit from declining asset prices.
+
+\subsection{Order Types}
+\label{sub:OrderTypes}
+In general, there are two main types of orders: buy orders (referred to as long) and sell orders (referred to as short). These orders can be further categorized into different order types based on their timing. However, for the purposes of this thesis, only the two main types of orders will be considered: market and limit orders.
+
+\subsubsection{Market Order}
+\label{subsub:MarketOrder}
+A market order is designed to execute a trade – either a buy or a sell – at the current market price. It prioritises the speed of execution of the order over the specific price at which the trade is executed. Market orders are used when traders want to execute a transaction immediately, regardless of the current market price.
+
+\subsubsection{Limit Order}
+\label{subsub:LimitOrder}
+A limit order is designed to execute a trade – either a buy or a sell – at a pre-defined market price. It prioritises the specific price over the rapid execution of the order. Limit orders are used when traders want to execute a transaction at a specific price. It is possible that the desired price will never be reached and therefore the limit order will never be executed.

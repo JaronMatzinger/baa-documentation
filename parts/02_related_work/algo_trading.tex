@@ -1,0 +1,23 @@
+\subsection{Alpha}
+\label{sub:Alpha}
+In the broader landscape of algorithmic trading, there are different motives and objectives. However, this thesis focuses specifically on the singular objective of finding alpha. The use of the term alpha in finance dates back to 1968, when Michael Jensen introduced Jensen's alpha in his paper \textit{The Performance of Mutual Funds in the Period 1945 - 1964} \citep{jensen1968performance}. Initially designed to assess the risk-adjusted returns of a portfolio and its relative performance against the expected market outcomes, Jensen's alpha evolved over time into a broader measure of investment performance, commonly referred to simply as alpha. This term is widely used to characterise returns that exceed those of the overall market or a benchmark index \citep{tulchinsky2019finding}.
+
+\subsection{Trading Strategies}
+\label{sub:Trading_Strategies}
+Throughout this thesis four different algorithmic trading strategies are used. This strategies are called \gls{sma}-based, momentum, mean reversion and machine learning.
+
+\subsubsection{\gls{sma}-based Trading Strategy}
+\label{subsub:SMA}
+The first type of algorithmic trading strategy relies on two \glspl{sma}, a faster and a slower one, to generate trading signals and market positioning. The basic idea is that if the shorter-term \gls{sma} crosses the longer-term \gls{sma} in absolute values signals a long market position and the opposite scenario signals a neutral or short market position.
+
+\subsubsection{Momentum Trading Strategy}
+\label{subsub:Momentum}
+Originating from a paper by \cite{jegadeesh1993returns}, the core idea behind momentum strategies is that financial asset that are trending one direction, will continue to do so for an extended period of time. Thus, an asset that strongly trends upwards signals a long market position and one that strongly trends downward signals a short market position.
+
+\subsubsection{Mean Reversion Trading Strategy}
+\label{subsub:Mean_Reversion}
+Mean reversion trading strategies assume that the price of an financial asset returns to some trend level if it is currently far enough from it \citep{balvers2000mean}. The distance to its mean can either be negative or positive, with negative implying a long market position and a positive a short market position.
+
+\subsubsection{Machine Learning Trading Strategy}
+\label{subsub:ML_Strategy}
+Whereas the three previous trading strategies originally stem from the domain of technical analysis (see \ref{sec:TechnicalAnalysis}), this trading strategy utilises predictions of machine and deep learning models to generate long or short market positions. This thesis aims to compare the before mentioned algorithmic trading strategies with two machine learning approaches.

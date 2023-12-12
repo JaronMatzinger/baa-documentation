@@ -1,0 +1,350 @@
+\documentclass[10pt,titlepage,a4paper]{report} %twoside
+
+% add Unicode support and use English as language
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\title{Deep Algorithmic Trading}
+\date{\today}
+\author{Jaron Matzinger}
+\raggedbottom
+\flushbottom
+
+% Pageformat and Styles
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{array,etoolbox}
+\usepackage{lscape}
+
+% Use Helvetica as font
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+\usepackage[T1]{fontenc}
+
+% Tables and inputs
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{float}
+\restylefloat{table}
+\usepackage{colortbl}
+\usepackage{numprint}
+%\npthousandsep{'}
+\npthousandsep{,}
+\npdecimalsign{.}
+\usepackage{siunitx}
+\newcommand\dsh{\multicolumn{3}{c@{\hspace{2em}}}{--}}
+
+% Citations
+\usepackage{natbib}
+
+\usepackage[utf8]{inputenc}
+
+% Math tools
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{bbm}
+
+% PDF include
+\usepackage{pdfpages}
+
+% CSV include
+\usepackage{csvsimple}
+\usepackage{booktabs}
+
+\usepackage{tablefootnote}
+
+\usepackage{textgreek}
+\usepackage{flafter}
+\usepackage[hidelinks]{hyperref}
+\usepackage[normalem]{ulem}
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\usepackage{footnote}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+
+%%%%%%%%%%%
+% Tikz to crate diagrams, thanks to: https://github.com/mvoelk/nn_graphics
+% Start of tikz settings
+\usepackage{dirtree}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
+\usetikzlibrary{matrix, chains, positioning, decorations.pathreplacing, arrows}
+\usetikzlibrary{shapes,arrows,positioning,calc,chains,scopes}
+
+\usepackage{ifthen}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+\pgfplotsset{every axis/.append style={tick label style={/pgf/number format/fixed},font=\scriptsize,ylabel near ticks,xlabel near ticks,grid=major}}
+
+\usepackage{amsmath}
+\DeclareMathOperator{\sigm}{sigm}
+\newcommand{\diff}{\mathop{}\!\mathrm{d}}
+
+% colors
+\definecolor{snowymint}{HTML}{E3F8D1}
+\definecolor{wepeep}{HTML}{FAD2D2}
+\definecolor{portafino}{HTML}{F5EE9D}
+\definecolor{plum}{HTML}{DCACEF}
+\definecolor{sail}{HTML}{A3CEEE}
+\definecolor{highland}{HTML}{6D885A}
+
+\tikzstyle{signal}=[arrows={-latex},draw=black,line width=1pt,rounded corners=4pt]
+
+% RNN
+\tikzstyle{block}=[draw=black,line width=1.0pt]
+\tikzstyle{cell}=[style=block,draw=highland,fill=snowymint,
+    rounded corners]
+\tikzstyle{celllayer}=[style=block,draw,fill=portafino,
+    inner sep=1pt,outer sep=0,
+    minimum width=28pt, minimum height=14pt]
+\tikzstyle{pointwise}=[style=block,ellipse,fill=wepeep,
+    inner sep=1pt,outer sep=0, minimum size=12pt]
+
+\def\iolen{24pt}
+\def\intergape{2pt}
+
+% MLP and CNN
+\tikzstyle{netnode}=[circle, inner sep=0pt, text width=22pt, align=center, line width=1.0pt]
+\tikzstyle{inputnode}=[netnode, fill=sail, draw=black]
+\tikzstyle{hiddennode}=[netnode, fill=snowymint, draw=black]
+\tikzstyle{infonode}=[netnode, fill=portafino, draw=black, inner sep=6pt, font=\Large]
+\tikzstyle{outputnode}=[netnode, fill=plum, draw=black]
+
+% Architecture
+\def\layerwidth{120pt}
+\def\layerheight{30pt}
+
+\tikzstyle{layer}=[style=block, draw, fill=black!20!white,
+    inner sep=5pt,outer sep=0pt, font=\footnotesize,
+    text centered, align=center,
+    minimum width=\layerwidth, minimum height=\layerheight]
+
+\tikzstyle{fc}=[style=layer, fill=blue!30!white]
+\tikzstyle{conv}=[style=layer, fill=green!30!white]
+\tikzstyle{activation}=[style=layer, fill=orange!30!white]
+\tikzstyle{pool}=[style=layer, fill=red!30!white]
+\tikzstyle{bn}=[style=layer, fill=cyan!30!white]
+\tikzstyle{recurrent}=[style=layer, fill=purple!30!white]
+\tikzstyle{softmax}=[style=layer, fill=yellow!30!white]
+\tikzstyle{point}=[]
+\tikzstyle{branch}=[coordinate]
+
+\def\vlayerwidth{30pt}
+\def\vlayerheight{3pt}
+\def\vblockheight{28pt}
+
+\tikzstyle{vlayer}=[minimum width=\vlayerwidth, minimum height=\vlayerheight]
+\tikzstyle{vblock}=[minimum width=\vlayerwidth, minimum height=\vblockheight, text width=1cm, align=center]
+
+% Precision, Recall
+\colorlet{fn}{gray!90!green!30!white}
+\colorlet{tp}{green!40!white}
+\colorlet{fp}{red!40!white}
+\colorlet{tn}{gray!90!red!20!white}
+% End of tikz settings
+%%%%%%%%%%%
+
+\setlength{\columnsep}{0.5cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Graphics, plots and figures
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest,compat/show suggested version=true}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, decorations.pathreplacing,matrix,shapes,positioning,chains}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,inner sep=0.4pt] (char) {#1};}}
+\newcommand*\ellipsed[1]{\tikz[baseline=(char.base)]{
+		\node[shape=ellipse,draw,inner sep=0.4pt] (char) {#1};}}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\newenvironment{Figure}
+{\par\medskip\noindent\minipage{\linewidth}}
+{\endminipage\par\medskip}
+\usepackage[export]{adjustbox}
+
+\usepackage{makeidx}
+\usetikzlibrary{calc}
+\newcommand{\tikzmark}[1]{\tikz[baseline,remember picture] \coordinate (#1) {};}
+
+\newcounter{magicrownumbers}
+\newcommand\rownumber{\stepcounter{magicrownumbers}\arabic{magicrownumbers}}
+
+% Algorithms
+\usepackage{algorithm} 
+\usepackage{algorithmic}  
+\usepackage[algo2e]{algorithm2e} 
+\newcommand{\assign}{$\leftarrow$}
+% Python style
+\SetStartEndCondition{ }{}{}%
+\SetKwProg{Fn}{def}{\string:}{}
+\SetKwFunction{Range}{range}%%
+\SetKw{KwTo}{in}\SetKwFor{For}{for}{\string:}{}%
+\SetKwIF{If}{ElseIf}{Else}{if}{:}{elif}{else:}{}%
+\SetKwFor{While}{while}{:}{}%
+
+\usepackage{listings}
+\lstset{
+	frame=single,
+	breaklines=true,
+	postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}},
+	backgroundcolor=\color[rgb]{0.95,0.95,0.95},
+}
+
+% Acronym definitions
+\usepackage[acronym]{glossaries}
+\loadglsentries{acronyms}
+\glsdisablehyper
+\makeglossaries
+
+% Page Settings
+\usepackage[top=26mm,bottom=26mm,left=23mm,right=31mm]{geometry}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{beginning}{
+	\fancyhf{}
+	%\fancyfoot[RO,LE]{\normalsize\thepage}
+	\pagenumbering{Roman}% Roman-numbered pages (start from i)
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+\fancypagestyle{normal}{
+	\fancyhf{}
+	%\fancyhead[CE,CO]{\leftmark}
+	%\fancyfoot[RO,LE]{\thepage}
+	%\fancyhead[LO,RE]{\leftmark}
+ 	\fancyhead[C]{\leftmark} % Centered header
+	\fancyfoot[C]{\thepage} % Centered footer
+	%\fancyfoot[C]{}
+	\pagenumbering{arabic}
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+% Redefine the plain page style
+\fancypagestyle{plain}{%
+	\fancyhf{}%
+	\cfoot{\thepage}
+        %\fancyfoot[RO,LE]{\thepage}
+	\renewcommand{\headrulewidth}{0pt}% Line at the header invisible
+	\renewcommand{\footrulewidth}{0pt}% Line at the footer visible
+}
+
+\usepackage{titlesec}
+\makeatletter
+\renewcommand{\@makeschapterhead}[1]{%
+	%  \vspace*{50\p@}%
+	\vspace*{20\p@}%
+	{\parindent \z@ \raggedright
+		\normalfont
+		\interlinepenalty\@M
+		\Huge \bfseries  #1\par\nobreak
+		%    \vskip 40\p@
+		\vskip 20\p@
+}}
+\makeatother
+
+% Formulas
+\newcommand{\rulesep}{\unskip\ \vrule\ }
+\newcommand{\empt}[2]{$#1^{\langle #2 \rangle}$}
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\def \h {\vec{h}}
+\def \y {\vec{y}}
+\def \x {\vec{x}}
+\def \W {\vec{W}}
+\def \b {\vec{b}}
+\def \realnumbers {\mathbb{R}}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+% Need a list of equation
+\usepackage{tocloft}
+\usepackage{ragged2e}
+% Define list of equations - Thanks to Charles Clayton: https://tex.stackexchange.com/a/354096
+\newcommand{\listequationsname}{List of Equations}
+\newlistof{myequations}{equ}{\listequationsname}
+\newcommand{\myequations}[1]{
+	\addcontentsline{equ}{myequations}{\protect\numberline{\theequation}#1}
+}
+\setlength{\cftmyequationsnumwidth}{2.3em}
+\setlength{\cftmyequationsindent}{1.5em}
+
+% equations with term definitions, credit to tex.stackexchange.com/questions/95838/how-to-write-a-perfect-equation-parameters-description
+\newenvironment{conditions}
+  {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+  {\end{tabular}\par\vspace{\belowdisplayskip}}
+  
+\newenvironment{conditions*}
+  {\par\vspace{\abovedisplayskip}\noindent
+   \tabularx{\columnwidth}{>{$}l<{$} @{${}={}$} >{\raggedright\arraybackslash}X}}
+  {\endtabularx\par\vspace{\belowdisplayskip}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Example Environment:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheorem{exmpl}{Example}[chapter]
+\newenvironment{example} 
+{\begin{exmpl}}
+	{\nopagebreak\hfill\mbox{$\ominus$}\end{exmpl}}
+
+% Acronyms
+\makeindex
+
+\begin{document}
+	\pagenumbering{gobble}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Title
+	\input{title_page.tex}
+	\pagestyle{beginning}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Abstract
+	\input{./parts/00_abstract.tex}
+	\newpage
+		
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Table of Content
+	\tableofcontents
+	\newpage
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Start with numbering
+	\pagestyle{normal}
+	
+	\input{./parts/01_introduction.tex}
+	\input{./parts/02_related_work.tex}
+	\input{./parts/03_methodology.tex}	
+	%\input{./parts/04_results.tex}
+	%\input{./parts/05_discussion.tex}
+
+	\appendix
+	%\input{./parts/99_appendix.tex}
+    
+    \newpage
+    \printglossary[type=\acronymtype, title=List of Abbreviations]
+    \newpage
+	\listoffigures
+	\newpage
+	\listoftables
+	\newpage
+	\listofalgorithms
+	\newpage
+	\listofmyequations
+	
+    \newpage
+	\bibliography{references}
+	\bibliographystyle{apalike}	
+\end{document}

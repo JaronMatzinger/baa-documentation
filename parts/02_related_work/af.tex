@@ -1,0 +1,49 @@
+\subsection{Activation Functions}
+\label{sub:AF}
+
+% Introduction
+Activation functions play a crucial role in \gls{nn} by introducing non-linearity. Without a non-linear activation function, \glspl{nn} would be limited to learning linear relationships in the data. The choice of activation function depends on the task and the specific requirements of the model.
+
+\subsubsection{Sigmoid}
+\label{subsub:Sigmoid}
+The sigmoid activation function, denoted $\sigma$, is defined by the equation \ref{eq:sigmoid}. This function scales the values to the range [0, 1], allowing a probabilistic interpretation of the output. The sigmoid function, which is often used in the last layer of binary classification problems, is continuous and differentiable. However, it suffers from vanishing gradients due to saturation regions at -$\infty$ and +$\infty$.
+
+\myequations{Sigmoid Activation Function}
+\begin{equation}
+    \centering
+    \sigma(z) = \frac{1}{1 + e^{-z}}
+    \label{eq:sigmoid}
+\end{equation}
+
+\subsubsection{Softmax}
+\label{subsub:Softmax}
+The softmax activation function, a generalisation of the sigmoid for multiple mutually exclusive classes, is given by the equation \ref{eq:softmax}. When there is only one class, the softmax and sigmoid functions are equivalent. Typically used as the final activation function in \glspl{nn}, softmax normalises the network output to a probability distribution over the predicted classes. It ensures that the output components fall within [0, 1] and sum to 1, allowing interpretation as a probability distribution.
+
+\myequations{Softmax Activation Function}
+\begin{equation}
+    \centering
+    \text{softmax}(z)_i = \frac{e^{z_i}}{\sum_{k=1}^K e^{z_k}}
+    \label{eq:softmax}
+\end{equation}
+
+\subsubsection{Hyperbolic Tangent}
+\label{subsub:Tanh}
+The \gls{tanh} function, given by equation \ref{eq:tanh}, produces outputs in the range [-1, 1] centered on zero. Continuous and differentiable, tanh suffers from vanishing gradient due to saturation regions. It is a suitable choice when a zero-centred output is desired.
+
+\myequations{tanh Activation Function}
+\begin{equation}
+    \centering
+    \text{tanh}(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}} = 2 \cdot \sigma(2z) - 1
+    \label{eq:tanh}
+\end{equation}
+
+\subsubsection{Rectified Linear Unit}
+\label{subsub:tanh}
+\gls{relu}, defined by the equation \ref{eq:relu}, is one of the most commonly used activation functions. It replaces negative values with zero and leaves positive values unchanged.
+
+\myequations{ReLU Activation Function}
+\begin{equation}
+    \centering
+    \text{ReLU}(z) = \text{max}(0, z)
+    \label{eq:relu}
+\end{equation}
